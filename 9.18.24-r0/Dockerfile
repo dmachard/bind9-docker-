@@ -1,6 +1,6 @@
 FROM alpine:3.18.4
 
-ARG BIND_VERSION=9.18.19-r0
+ARG BIND_VERSION=9.18.24-r0
 
 RUN apk --no-cache add bind=$BIND_VERSION && \
     addgroup -g 1000 bind && adduser -D -H -G bind -u 1000 -S bind && \

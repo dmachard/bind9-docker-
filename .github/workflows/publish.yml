@@ -10,36 +10,18 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - id: squid
-      run: echo "##[set-output name=version;]$(echo ${{ github.event.release.tag_name }} | cut -d'-' -f1)"
-
-    - id: release
-      run: echo "##[set-output name=version;]$(echo ${{ github.event.release.tag_name }} | cut -d'-' -f1,2)"
-
-    - id: latest
-      run: echo "##[set-output name=flag;]$(echo ${{ github.event.release.tag_name }} | cut -d'-' -f3)"
-
     - name: Build the Docker image
       run: |
-        cd ${{ steps.squid.outputs.version }}/
-        docker build . -t squid
+        cd ${{ github.event.release.tag_name }}/
+        docker build . --file Dockerfile -t bind9
 
     - name: Tag image
       run: |
-        docker tag bind9 dmachard/bind9:${{ steps.release.outputs.version }}
+        docker tag bind9 dmachard/bind9:${{ github.event.release.tag_name }}
         docker tag bind9 dmachard/bind9:latest
-
-    - name: Tag latest image
-      if: steps.latest.outputs.flag == 'latest'
-      run:  docker tag bind9 dmachard/bind9:latest
 
     - name: Upload to DockerHub
       run: |
         docker login -u ${{ secrets.DOCKERHUB_LOGIN }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
-        docker push dmachard/bind9:${{ steps.release.outputs.version }}
-
-    - name: Upload latest to DockerHub
-      if: steps.latest.outputs.flag == 'latest'
-      run: |
-        docker login -u ${{ secrets.DOCKERHUB_LOGIN }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+        docker push dmachard/bind9:${{ github.event.release.tag_name }}
         docker push dmachard/bind9:latest
