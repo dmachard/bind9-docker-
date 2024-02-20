@@ -1,0 +1,7 @@
+version: 2
+
+updates:
+  - package-ecosystem: "docker"
+    directory: "/9.18.19/"
+    schedule:
+      interval: "weekly"
