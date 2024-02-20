@@ -1,4 +1,4 @@
-FROM alpine:3.19.1
+FROM alpine:3.18.4
 
 ARG BIND_VERSION=9.18.24-r0
 
