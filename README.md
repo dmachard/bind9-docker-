@@ -15,6 +15,12 @@ Run bind9 with the following command:
 sudo docker run --name=bind -d -p 53:53/udp -p 53:53/tcp dmachard/bind9:latest
 ```
 
+Execute rndc
+
+```bash
+sudo docker exec bind /usr/sbin/rndc reload
+```
+
 ## Custom configuration
 
 You can run this image and provide your own bind configuration like that:
